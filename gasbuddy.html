@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GasBuddy — India's Infrastructure Specialists</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--y:#ffdb00;--b:#007cc1;--w:#fff}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--w);overflow-x:hidden;color:#111}
+
+/* PAGE SYSTEM */
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+/* CURSOR */
+#cursor{width:10px;height:10px;background:var(--y);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s}
+#cursor.big{width:40px;height:40px;background:rgba(255,219,0,.2);border:1.5px solid var(--y)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:22px 64px;transition:all .35s}
+nav.solid{background:var(--w);border-bottom:3px solid var(--y);padding:14px 64px}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:3px;color:var(--w);text-decoration:none;transition:color .3s;cursor:pointer}
+nav.solid .nav-logo{color:var(--b)}
+.nav-links{display:flex;gap:6px;align-items:center}
+.nav-links button{background:none;border:none;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7);cursor:pointer;padding:8px 14px;border-radius:4px;transition:all .2s}
+nav.solid .nav-links button{color:#555}
+.nav-links button:hover,.nav-links button.active{color:var(--y);background:rgba(255,219,0,.1)}
+nav.solid .nav-links button:hover,nav.solid .nav-links button.active{color:var(--b);background:rgba(0,124,193,.08)}
+.nav-cta{background:var(--y)!important;color:#111!important;border-radius:4px;font-weight:700!important}
+nav.solid .nav-cta{background:var(--b)!important;color:var(--w)!important}
+
+/* ==================== HOME PAGE ==================== */
+.hero{min-height:100vh;background:var(--b);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:0 64px 90px}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-bg-word{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:32vw;color:rgba(255,255,255,.03);line-height:1;top:50%;left:-2%;transform:translateY(-50%);pointer-events:none;white-space:nowrap;animation:bgdrift 25s ease-in-out infinite}
+@keyframes bgdrift{0%,100%{transform:translateY(-50%)}50%{transform:translateY(-52%) translateX(-30px)}}
+.hero-rings{position:absolute;right:-140px;top:50%;transform:translateY(-50%)}
+.ring{border-radius:50%;border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center}
+.ring1{width:580px;height:580px;animation:spin1 50s linear infinite}
+.ring2{width:400px;height:400px;border-color:rgba(255,219,0,.1);animation:spin1 35s linear infinite reverse}
+.ring3{width:220px;height:220px;background:rgba(255,219,0,.06);border-color:rgba(255,219,0,.18)}
+@keyframes spin1{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;background:var(--y);color:#111;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:8px 22px;border-radius:50px;margin-bottom:28px;width:fit-content;animation:fu .7s .1s both}
+.dot-blink{width:7px;height:7px;background:#111;border-radius:50%;animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(68px,11vw,155px);line-height:.88;color:var(--w);letter-spacing:1px;animation:fu .8s .3s both}
+.hero h1 em{color:var(--y);font-style:normal}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-top:44px;animation:fu .8s .5s both}
+.hero-desc{font-size:16px;color:rgba(255,255,255,.6);line-height:1.8;max-width:380px}
+.hero-stats{display:flex;gap:52px}
+.hs-num{font-family:'Bebas Neue',sans-serif;font-size:66px;color:var(--y);line-height:1}
+.hs-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
+.scroll-indicator{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.3);font-size:10px;letter-spacing:3px;text-transform:uppercase}
+.scroll-indicator::after{content:'';width:1px;height:55px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent);display:block;animation:sdrop 2s ease-in-out infinite}
+@keyframes sdrop{0%{opacity:0;transform:scaleY(0);transform-origin:top}60%{opacity:1;transform:scaleY(1)}100%{opacity:0;transform:scaleY(0);transform-origin:bottom}}
+@keyframes fu{from{opacity:0;transform:translateY(44px)}to{opacity:1;transform:translateY(0)}}
+
+/* TICKER */
+.ticker{background:var(--y);overflow:hidden;padding:12px 0}
+.tick-track{display:flex;animation:tick 32s linear infinite;white-space:nowrap}
+.tick-item{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:3px;color:#111;padding:0 36px;display:inline-flex;align-items:center;gap:14px}
+.tick-item::after{content:'◆';color:var(--b);font-size:10px}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* WHY US */
+.why{display:grid;grid-template-columns:1fr 1fr;min-height:560px}
+.why-left{background:var(--b);padding:80px 64px;display:flex;flex-direction:column;justify-content:center}
+.why-right{background:var(--w);padding:80px 64px;display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.why-title{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--w);line-height:.92;margin-bottom:24px}
+.why-title em{color:var(--y);font-style:normal}
+.why-desc{font-size:15px;color:rgba(255,255,255,.6);line-height:1.8}
+.why-box{background:var(--w);padding:32px 28px;border:1.5px solid rgba(0,0,0,.06);transition:all .3s}
+.why-box:hover{background:var(--b);border-color:var(--b);transform:scale(1.03)}
+.why-box:hover .wb-num{color:rgba(255,255,255,.07)}
+.why-box:hover .wb-title{color:var(--y)}
+.why-box:hover .wb-body{color:rgba(255,255,255,.55)}
+.wb-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:rgba(0,124,193,.12);line-height:1;transition:color .3s}
+.wb-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#111;margin:10px 0 8px;transition:color .3s}
+.wb-body{font-size:13px;color:#888;line-height:1.6;transition:color .3s}
+
+/* SECTORS STRIP */
+.sectors{padding:90px 64px;background:#f4f6f8}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--b);margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.sec-label::before{content:'';width:28px;height:2px;background:var(--y);display:block}
+.sec-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,6vw,80px);color:#111;line-height:.92;margin-bottom:52px}
+.sec-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.sc{background:var(--w);padding:38px 32px;cursor:pointer;transition:all .32s;border-bottom:3px solid transparent;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;inset:0;background:var(--b);transform:translateY(100%);transition:transform .35s ease;z-index:0}
+.sc:hover{border-bottom-color:var(--y)}
+.sc:hover::before{transform:translateY(0)}
+.sc:hover .sc-icon,.sc:hover .sc-title,.sc:hover .sc-body,.sc:hover .sc-tag{position:relative;z-index:1}
+.sc:hover .sc-title{color:var(--w)}
+.sc:hover .sc-body{color:rgba(255,255,255,.55)}
+.sc:hover .sc-tag{background:rgba(255,219,0,.18);color:var(--y)}
+.sc:hover .sc-icon{color:var(--y)}
+.sc-icon{font-size:30px;margin-bottom:18px;color:var(--b);transition:color .3s;position:relative;z-index:1}
+.sc-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;color:#111;margin-bottom:10px;transition:color .3s;position:relative;z-index:1}
+.sc-body{font-size:14px;color:#777;line-height:1.7;transition:color .3s;position:relative;z-index:1}
+.sc-tag{display:inline-block;margin-top:16px;background:#e8f4fd;color:var(--b);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:50px;transition:all .3s;position:relative;z-index:1}
+
+/* NUMBERS BAND */
+.numbers{background:var(--b);padding:70px 64px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px}
+.num-cell{padding:40px 32px;border-right:1px solid rgba(255,255,255,.1);text-align:center}
+.num-cell:last-child{border-right:none}
+.nc-big{font-family:'Bebas Neue',sans-serif;font-size:86px;color:var(--y);line-height:1}
+.nc-lbl{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:8px}
+
+/* CTA BAND */
+.cta-band{background:var(--y);padding:80px 64px;display:flex;align-items:center;justify-content:space-between;gap:40px}
+.cta-band h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,6vw,86px);color:#111;line-height:.92}
+.cta-band h2 span{color:var(--b)}
+.cta-btn{background:var(--b);color:var(--w);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:18px 44px;border:none;cursor:pointer;border-radius:4px;transition:all .25s;white-space:nowrap}
+.cta-btn:hover{background:#111;transform:translateY(-3px)}
+
+/* ==================== SERVICES PAGE ==================== */
+.page-hero{background:var(--b);padding:160px 64px 90px;position:relative;overflow:hidden}
+.page-hero-bg{position:absolute;inset:0;font-family:'Bebas Neue',sans-serif;font-size:22vw;color:rgba(255,255,255,.03);line-height:1;display:flex;align-items:center;justify-content:flex-end;padding-right:40px;pointer-events:none}
+.ph-label{font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--y);margin-bottom:18px}
+.ph-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,9vw,120px);color:var(--w);line-height:.9}
+.ph-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.8;max-width:500px;margin-top:24px}
+
+.srv-block{padding:90px 64px}
+.srv-block:nth-child(even){background:#f4f6f8}
+.srv-row{display:grid;grid-template-columns:340px 1fr;gap:64px;align-items:start}
+.srv-row.flip{grid-template-columns:1fr 340px}
+.srv-row.flip .srv-info{order:2}
+.srv-row.flip .srv-cards-wrap{order:1}
+.srv-num{font-family:'Bebas Neue',sans-serif;font-size:100px;color:rgba(0,124,193,.1);line-height:1}
+.srv-title{font-family:'Bebas Neue',sans-serif;font-size:52px;color:#111;line-height:.95;margin-bottom:18px}
+.srv-body{font-size:15px;color:#666;line-height:1.8}
+.srv-tag{display:inline-block;margin-top:18px;background:var(--b);color:var(--w);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px 18px;border-radius:4px}
+.mini-cards{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.mini{padding:28px 24px;background:var(--w);border-left:4px solid var(--y);transition:all .3s}
+.mini:hover{background:var(--b);border-left-color:var(--y)}
+.mini:hover .mini-title{color:var(--y)}
+.mini:hover .mini-body{color:rgba(255,255,255,.55)}
+.mini-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#111;margin-bottom:8px;transition:color .3s}
+.mini-body{font-size:13px;color:#888;line-height:1.6;transition:color .3s}
+
+/* DARK SRV */
+.srv-dark{background:var(--b)!important}
+.srv-dark .srv-num{color:rgba(255,219,0,.12)}
+.srv-dark .srv-title{color:var(--w)}
+.srv-dark .srv-body{color:rgba(255,255,255,.55)}
+.srv-dark .mini{background:rgba(255,255,255,.05);border-left-color:var(--y)}
+.srv-dark .mini:hover{background:rgba(255,219,0,.1)}
+.srv-dark .mini-title{color:rgba(255,255,255,.9)}
+.srv-dark .mini:hover .mini-title{color:var(--y)}
+.srv-dark .mini-body{color:rgba(255,255,255,.45)}
+
+/* ==================== PROJECTS PAGE ==================== */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:0}
+.proj-card{position:relative;height:420px;overflow:hidden;cursor:pointer}
+.proj-card-bg{position:absolute;inset:0;transition:transform .5s ease}
+.pc-blue{background:var(--b)}
+.pc-yellow{background:var(--y)}
+.pc-dark{background:#0a1628}
+.pc-mid{background:#1a5a8a}
+.pc-light{background:#e8f4fd}
+.proj-card:hover .proj-card-bg{transform:scale(1.06)}
+.proj-card-content{position:absolute;inset:0;padding:36px 32px;display:flex;flex-direction:column;justify-content:flex-end}
+.proj-cat{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
+.proj-name{font-family:'Bebas Neue',sans-serif;font-size:38px;line-height:.95;margin-bottom:12px}
+.proj-desc{font-size:13px;line-height:1.6;max-width:280px}
+.proj-card.light-card .proj-cat{color:var(--b)}
+.proj-card.light-card .proj-name{color:#111}
+.proj-card.light-card .proj-desc{color:#555}
+.proj-card:not(.light-card) .proj-cat{color:var(--y)}
+.proj-card:not(.light-card) .proj-name{color:var(--w)}
+.proj-card:not(.light-card) .proj-desc{color:rgba(255,255,255,.6)}
+.proj-num{position:absolute;top:28px;right:28px;font-family:'Bebas Neue',sans-serif;font-size:56px;opacity:.12;line-height:1}
+.proj-card.light-card .proj-num{color:#111}
+.proj-card:not(.light-card) .proj-num{color:var(--w)}
+.proj-arrow{position:absolute;top:28px;left:32px;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;opacity:0;transform:translateY(-8px)}
+.proj-card:hover .proj-arrow{opacity:1;transform:translateY(0)}
+.proj-card:not(.light-card) .proj-arrow{background:var(--y);color:#111}
+.proj-card.light-card .proj-arrow{background:var(--b);color:var(--w)}
+
+/* PROJ STATS */
+.proj-stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--b);gap:1px}
+.ps-cell{padding:50px 40px;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
+.ps-cell:last-child{border-right:none}
+.ps-num{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--y);line-height:1}
+.ps-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:8px}
+
+/* ==================== ABOUT PAGE ==================== */
+.about-intro{display:grid;grid-template-columns:1fr 1fr;min-height:600px}
+.ai-left{background:var(--b);padding:100px 64px;display:flex;flex-direction:column;justify-content:center}
+.ai-right{background:var(--y);padding:100px 64px;display:flex;flex-direction:column;justify-content:center}
+.ai-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,8vw,100px);color:var(--w);line-height:.9}
+.ai-big em{color:var(--y);font-style:normal}
+.ai-body{font-size:15px;color:rgba(255,255,255,.65);line-height:1.9;margin-top:24px}
+.ai-right-title{font-family:'Bebas Neue',sans-serif;font-size:52px;color:#111;line-height:.92;margin-bottom:24px}
+.ai-right-body{font-size:15px;color:rgba(0,0,0,.6);line-height:1.8}
+
+.values{padding:90px 64px;background:var(--w)}
+.val-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:52px}
+.val-card{padding:44px 32px;background:#f4f6f8;transition:all .3s;border-top:4px solid transparent}
+.val-card:hover{background:var(--b);border-top-color:var(--y);transform:translateY(-6px)}
+.val-card:hover .vc-title{color:var(--y)}
+.val-card:hover .vc-body{color:rgba(255,255,255,.55)}
+.val-card:hover .vc-icon{color:var(--y)}
+.vc-icon{font-size:32px;color:var(--b);margin-bottom:18px;transition:color .3s}
+.vc-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#111;margin-bottom:12px;transition:color .3s}
+.vc-body{font-size:14px;color:#888;line-height:1.7;transition:color .3s}
+
+.team{padding:90px 64px;background:#f4f6f8}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:52px}
+.team-card{background:var(--w);overflow:hidden;transition:transform .3s}
+.team-card:hover{transform:translateY(-8px)}
+.tc-photo{height:220px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:60px;color:var(--w)}
+.tc-blue{background:var(--b)}
+.tc-yellow{background:var(--y)}
+.tc-yellow .tc-initials{color:#111}
+.tc-initials{color:var(--w)}
+.tc-info{padding:24px}
+.tc-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#111;margin-bottom:4px}
+.tc-role{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--b)}
+
+.timeline{padding:90px 64px;background:var(--b)}
+.tl-items{margin-top:52px;display:flex;flex-direction:column;gap:1px}
+.tl-item{display:grid;grid-template-columns:140px 1fr;gap:40px;background:rgba(255,255,255,.04);padding:36px 40px;border-left:4px solid rgba(255,219,0,.2);transition:all .3s}
+.tl-item:hover{background:rgba(255,219,0,.06);border-left-color:var(--y)}
+.tl-year{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--y);line-height:1}
+.tl-right-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--w);margin-bottom:8px}
+.tl-right-body{font-size:14px;color:rgba(255,255,255,.5);line-height:1.7}
+
+/* ==================== CONTACT PAGE ==================== */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;min-height:70vh}
+.cl-left{background:var(--b);padding:90px 64px;display:flex;flex-direction:column;justify-content:center}
+.cl-right{background:var(--w);padding:90px 64px}
+.cl-title{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--w);line-height:.92;margin-bottom:32px}
+.cl-title em{color:var(--y);font-style:normal}
+.contact-item{display:flex;align-items:flex-start;gap:16px;margin-bottom:32px}
+.ci-icon{width:44px;height:44px;background:rgba(255,219,0,.1);border:1px solid rgba(255,219,0,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ci-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px}
+.ci-val{font-size:15px;color:var(--w);font-weight:500}
+.form-title{font-family:'Bebas Neue',sans-serif;font-size:48px;color:#111;margin-bottom:32px}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#aaa;margin-bottom:8px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:14px 18px;border:1.5px solid #e0e0e0;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:15px;color:#111;background:var(--w);transition:border-color .2s;outline:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--b)}
+.form-group textarea{height:130px;resize:none}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.submit-btn{background:var(--b);color:var(--w);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:16px 40px;border:none;cursor:pointer;border-radius:4px;width:100%;transition:all .25s;margin-top:8px}
+.submit-btn:hover{background:var(--y);color:#111}
+
+/* OFFICES */
+.offices{padding:80px 64px;background:#f4f6f8}
+.office-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:48px}
+.office-card{background:var(--w);padding:40px 32px;border-bottom:4px solid transparent;transition:all .3s}
+.office-card:hover{border-bottom-color:var(--y);background:var(--b)}
+.office-card:hover .oc-city{color:var(--y)}
+.office-card:hover .oc-addr{color:rgba(255,255,255,.55)}
+.office-card:hover .oc-icon{color:var(--y)}
+.oc-icon{font-size:28px;color:var(--b);margin-bottom:18px;transition:color .3s}
+.oc-city{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#111;margin-bottom:10px;transition:color .3s}
+.oc-addr{font-size:14px;color:#888;line-height:1.7;transition:color .3s}
+
+/* ==================== FOOTER ==================== */
+footer{background:#050d1a;padding:70px 64px 36px}
+.ft{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:56px;margin-bottom:56px}
+.ft-logo{font-family:'Bebas Neue',sans-serif;font-size:50px;color:var(--y);letter-spacing:4px;line-height:1;margin-bottom:16px}
+.ft-desc{font-size:14px;color:rgba(255,255,255,.35);line-height:1.8;max-width:220px}
+.ft-col-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:18px}
+.ft-links{display:flex;flex-direction:column;gap:10px}
+.ft-links a{font-size:14px;color:rgba(255,255,255,.45);text-decoration:none;cursor:pointer;transition:color .2s}
+.ft-links a:hover{color:var(--y)}
+.ft-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:28px;display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.ft-bottom span{color:rgba(255,255,255,.22);letter-spacing:1px}
+.ft-bottom .brand{color:var(--y);font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px}
+
+/* REVEAL ANIM */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .65s,transform .65s}
+.rv.vis{opacity:1;transform:none}
+
+@media(max-width:900px){
+  nav{padding:16px 24px}nav.solid{padding:12px 24px}
+  .nav-links{display:none}
+  .hero,.page-hero,.srv-block,.sectors,.values,.team,.timeline,.contact-layout .cl-left,.contact-layout .cl-right,.offices,.ft{padding-left:24px;padding-right:24px}
+  .hero h1{font-size:62px}
+  .why,.about-intro,.contact-layout{grid-template-columns:1fr}
+  .sec-cards,.mini-cards,.val-grid,.team-grid,.office-grid{grid-template-columns:1fr}
+  .proj-grid{grid-template-columns:1fr}
+  .numbers,.proj-stats,.num-cell,.ps-cell{grid-template-columns:1fr 1fr}
+  .srv-row,.srv-row.flip{grid-template-columns:1fr}
+  .ft{grid-template-columns:1fr 1fr;gap:32px}
+  .cta-band{flex-direction:column;text-align:center}
+  .tl-item{grid-template-columns:80px 1fr;gap:20px}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <span class="nav-logo" onclick="showPage('home')">GasBuddy</span>
+  <div class="nav-links">
+    <button onclick="showPage('home')" class="active" id="btn-home">Home</button>
+    <button onclick="showPage('services')" id="btn-services">Services</button>
+    <button onclick="showPage('projects')" id="btn-projects">Projects</button>
+    <button onclick="showPage('about')" id="btn-about">About Us</button>
+    <button onclick="showPage('contact')" id="btn-contact" class="nav-cta">Contact</button>
+  </div>
+</nav>
+
+<!-- ==================== HOME ==================== -->
+<div class="page active" id="page-home">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-bg-word">GASBUDDY</div>
+    </div>
+    <div class="hero-rings">
+      <div class="ring ring1"><div class="ring ring2"><div class="ring ring3"></div></div></div>
+    </div>
+    <div class="hero-badge"><div class="dot-blink"></div> India's Infrastructure Specialists</div>
+    <h1>Building<br><em>Stronger</em><br>India.</h1>
+    <div class="hero-bottom">
+      <p class="hero-desc">GasBuddy delivers end-to-end infrastructure solutions — from fuel stations and EV charging to Indian Railways, national highways, gas storage, and metal fabrication.</p>
+      <div class="hero-stats">
+        <div><div class="hs-num">9</div><div class="hs-lbl">Sectors</div></div>
+        <div><div class="hs-num">40+</div><div class="hs-lbl">Work Types</div></div>
+        <div><div class="hs-num">15+</div><div class="hs-lbl">Years</div></div>
+      </div>
+    </div>
+    <div class="scroll-indicator">Scroll</div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="tick-track">
+      <span class="tick-item">Petrol Pump Construction</span><span class="tick-item">CNG Stations</span><span class="tick-item">EV Charging</span><span class="tick-item">Indian Railways</span><span class="tick-item">National Highways</span><span class="tick-item">Metal Fabrication</span><span class="tick-item">Solar Power</span><span class="tick-item">Hydrogen Systems</span><span class="tick-item">PEB Works</span><span class="tick-item">Gas Storage</span><span class="tick-item">Rail Tunnels</span><span class="tick-item">Flyovers</span>
+      <span class="tick-item">Petrol Pump Construction</span><span class="tick-item">CNG Stations</span><span class="tick-item">EV Charging</span><span class="tick-item">Indian Railways</span><span class="tick-item">National Highways</span><span class="tick-item">Metal Fabrication</span><span class="tick-item">Solar Power</span><span class="tick-item">Hydrogen Systems</span><span class="tick-item">PEB Works</span><span class="tick-item">Gas Storage</span><span class="tick-item">Rail Tunnels</span><span class="tick-item">Flyovers</span>
+    </div>
+  </div>
+
+  <!-- WHY GASBUDDY -->
+  <div class="why rv">
+    <div class="why-left">
+      <div class="why-title">Why<br><em>GasBuddy</em>?</div>
+      <p class="why-desc">With over 15 years of delivering complex infrastructure across India, GasBuddy brings unmatched expertise, technical precision, and a commitment to nation-building — on time, every time.</p>
+    </div>
+    <div class="why-right">
+      <div class="why-box"><div class="wb-num">01</div><div class="wb-title">End-to-End Delivery</div><div class="wb-body">From design and engineering to commissioning and handover — we own the full process.</div></div>
+      <div class="why-box"><div class="wb-num">02</div><div class="wb-title">Multi-Sector Expertise</div><div class="wb-body">9 infrastructure sectors, 40+ work types, and a unified delivery team.</div></div>
+      <div class="why-box"><div class="wb-num">03</div><div class="wb-title">Green Technology</div><div class="wb-body">Hydrogen trains, solar power, EV charging — we lead India's green energy transition.</div></div>
+      <div class="why-box"><div class="wb-num">04</div><div class="wb-title">Quality Assured</div><div class="wb-body">ISO-certified processes, rigorous QA/QC, and zero-compromise safety standards.</div></div>
+    </div>
+  </div>
+
+  <!-- SECTORS -->
+  <section class="sectors rv">
+    <div class="sec-label">Our Sectors</div>
+    <div class="sec-heading">What We Do</div>
+    <div class="sec-cards">
+      <div class="sc" onclick="showPage('services')"><div class="sc-icon">⛽</div><div class="sc-title">Fuel Infrastructure</div><div class="sc-body">Petrol pumps, CNG stations, EV charging, and highway amenities — complete fuel and energy retail infrastructure.</div><span class="sc-tag">Fuel & Energy</span></div>
+      <div class="sc" onclick="showPage('services')"><div class="sc-icon">🚂</div><div class="sc-title">Indian Railways</div><div class="sc-body">FOB/ROB/RUB, PSC slabs, ballastless tracks, solar, hydrogen trains, tunnels, and rail safety services.</div><span class="sc-tag">Railways</span></div>
+      <div class="sc" onclick="showPage('services')"><div class="sc-icon">🛣️</div><div class="sc-title">National Highways</div><div class="sc-body">Road construction, bridges, flyovers, and grade-separator works for NHAI and state highway projects.</div><span class="sc-tag">Highways</span></div>
+      <div class="sc" onclick="showPage('services')"><div class="sc-icon">🏭</div><div class="sc-title">Gas Storage & Transport</div><div class="sc-body">CNG cascades, nitrogen/helium quads, Type-1 & Type-4 cylinders, and industrial gas equipment.</div><span class="sc-tag">Gas</span></div>
+      <div class="sc" onclick="showPage('services')"><div class="sc-icon">🔩</div><div class="sc-title">Metal Fabrication</div><div class="sc-body">Steel bridges, metallizing, warehouses, and structural metalworks for railways and industrial clients.</div><span class="sc-tag">Metal</span></div>
+      <div class="sc" onclick="showPage('services')"><div class="sc-icon">🏗️</div><div class="sc-title">PEB Works</div><div class="sc-body">Pre-engineered buildings — factories, warehouses, industrial sheds, and commercial structures.</div><span class="sc-tag">PEB</span></div>
+    </div>
+  </section>
+
+  <!-- NUMBERS -->
+  <div class="numbers rv">
+    <div class="num-cell"><div class="nc-big">500+</div><div class="nc-lbl">Projects Completed</div></div>
+    <div class="num-cell"><div class="nc-big">15+</div><div class="nc-lbl">Years Experience</div></div>
+    <div class="num-cell"><div class="nc-big">28</div><div class="nc-lbl">States Covered</div></div>
+    <div class="num-cell"><div class="nc-big">99%</div><div class="nc-lbl">On-Time Delivery</div></div>
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="cta-band rv">
+    <h2>Ready to<br><span>Build</span> Together?</h2>
+    <button class="cta-btn" onclick="showPage('contact')">Get In Touch →</button>
+  </div>
+
+  <footer>
+    <div class="ft">
+      <div><div class="ft-logo">Gas<br>Buddy</div><p class="ft-desc">India's trusted infrastructure specialists. Building stronger since 2009.</p></div>
+      <div><div class="ft-col-title">Services</div><div class="ft-links"><a onclick="showPage('services')">Fuel Infrastructure</a><a onclick="showPage('services')">Indian Railways</a><a onclick="showPage('services')">National Highways</a><a onclick="showPage('services')">Gas Storage</a><a onclick="showPage('services')">Metal & PEB</a></div></div>
+      <div><div class="ft-col-title">Company</div><div class="ft-links"><a onclick="showPage('about')">About Us</a><a onclick="showPage('projects')">Projects</a><a onclick="showPage('contact')">Contact</a><a>Careers</a><a>News</a></div></div>
+      <div><div class="ft-col-title">Contact</div><div class="ft-links"><a>info@gasbuddy.in</a><a>+91 98100 00000</a><a>New Delhi, India</a><a>Mumbai Office</a><a>Chennai Office</a></div></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 GasBuddy Infrastructure Pvt. Ltd. All rights reserved.</span><span class="brand">GasBuddy</span></div>
+  </footer>
+</div>
+
+<!-- ==================== SERVICES ==================== -->
+<div class="page" id="page-services">
+  <div class="page-hero">
+    <div class="page-hero-bg">SRV</div>
+    <div class="ph-label">What We Offer</div>
+    <div class="ph-title">Our<br>Services</div>
+    <p class="ph-sub">A complete portfolio of infrastructure services — from fuel stations and gas storage to Indian Railways works, highways, metal fabrication, and green energy systems.</p>
+  </div>
+
+  <!-- FUEL -->
+  <div class="srv-block rv">
+    <div class="srv-row">
+      <div class="srv-info"><div class="srv-num">01</div><div class="srv-title">Fuel & Energy Retail</div><p class="srv-body">GasBuddy builds complete fuel retail infrastructure — petrol pumps, CNG stations, and the new generation of EV charging stations. We handle everything from civil works to commissioning.</p><span class="srv-tag">Fuel · CNG · EV</span></div>
+      <div class="srv-cards-wrap"><div class="mini-cards">
+        <div class="mini"><div class="mini-title">Petrol Pump Construction</div><div class="mini-body">Full civil, electrical, underground tank, dispensers, canopy, and site finishing.</div></div>
+        <div class="mini"><div class="mini-title">Highway Amenities</div><div class="mini-body">Rest areas, food courts, washrooms, and traveller facility complexes.</div></div>
+        <div class="mini"><div class="mini-title">CNG Stations</div><div class="mini-body">Cascade systems, compressors, dispensers, civil, and full commissioning.</div></div>
+        <div class="mini"><div class="mini-title">EV Charging Stations</div><div class="mini-body">AC/DC fast chargers, smart management, canopy, and electrical works.</div></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- GAS STORAGE -->
+  <div class="srv-block srv-dark rv">
+    <div class="srv-row flip">
+      <div class="srv-info"><div class="srv-num">02</div><div class="srv-title">Gas Storage & Transportation</div><p class="srv-body">We design, fabricate, and supply industrial gas storage and transportation equipment — from CNG cascades to specialised helium and nitrogen containers for industrial and scientific use.</p><span class="srv-tag" style="background:var(--y);color:#111">Gas · Storage · Transport</span></div>
+      <div class="srv-cards-wrap"><div class="mini-cards">
+        <div class="mini"><div class="mini-title">CNG Cascades</div><div class="mini-body">High-pressure CNG cascade systems for storage and fast-fill dispensing.</div></div>
+        <div class="mini"><div class="mini-title">Nitrogen Quads</div><div class="mini-body">Tube trailer quads for industrial nitrogen transportation.</div></div>
+        <div class="mini"><div class="mini-title">Helium Quads</div><div class="mini-body">Specialised helium containers for scientific and industrial transport.</div></div>
+        <div class="mini"><div class="mini-title">Type-1 & Type-4 Cylinders</div><div class="mini-body">Steel seamless and composite lightweight cylinders for all gas types.</div></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- NATIONAL HIGHWAYS -->
+  <div class="srv-block rv">
+    <div class="srv-row">
+      <div class="srv-info"><div class="srv-num">03</div><div class="srv-title">National Highway Works</div><p class="srv-body">GasBuddy executes major national highway projects for NHAI and state agencies — road construction, bridges, and flyovers using the latest materials and construction technologies.</p><span class="srv-tag">Roads · Bridges · Flyovers</span></div>
+      <div class="srv-cards-wrap"><div class="mini-cards">
+        <div class="mini"><div class="mini-title">Road Construction</div><div class="mini-body">Sub-base, DBM, bituminous concrete, drainage, and road markings.</div></div>
+        <div class="mini"><div class="mini-title">Bridges</div><div class="mini-body">PSC girder, steel composite, RCC bridges — fabrication, launching, erection.</div></div>
+        <div class="mini"><div class="mini-title">Flyovers</div><div class="mini-body">Grade separators and flyover structures for traffic decongestion.</div></div>
+        <div class="mini"><div class="mini-title">Retaining Walls & Drainage</div><div class="mini-body">All ancillary highway civil works and site development.</div></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- INDIAN RAILWAYS -->
+  <div class="srv-block srv-dark rv" style="background:#040e1f!important">
+    <div class="srv-row flip">
+      <div class="srv-info"><div class="srv-num">07</div><div class="srv-title">Indian Railways</div><p class="srv-body">Our flagship sector. GasBuddy delivers the full spectrum of Indian Railways works — structural, safety, energy, and cutting-edge green technology including hydrogen train systems.</p><span class="srv-tag" style="background:var(--y);color:#111">Railways · Green · Safety</span></div>
+      <div class="srv-cards-wrap"><div class="mini-cards">
+        <div class="mini" style="background:rgba(255,255,255,.04);border-left-color:var(--y)"><div class="mini-title" style="color:rgba(255,255,255,.9)">Heritage Station Beautification</div><div class="mini-body" style="color:rgba(255,255,255,.45)">Art, murals, and beautification works at railway heritage stations.</div></div>
+        <div class="mini" style="background:rgba(255,255,255,.04);border-left-color:var(--y)"><div class="mini-title" style="color:rgba(255,255,255,.9)">FOB / ROB / RUB / LHS</div><div class="mini-body" style="color:rgba(255,255,255,.45)">Foot over bridges, road over/under bridges, and level height structures.</div></div>
+        <div class="mini" style="background:rgba(255,255,255,.04);border-left-color:var(--y)"><div class="mini-title" style="color:rgba(255,255,255,.9)">PSC Slabs & Ballastless Tracks</div><div class="mini-body" style="color:rgba(255,255,255,.45)">Steel girder replacement with PSC slabs; modern slab-track systems.</div></div>
+        <div class="mini" style="background:rgba(255,255,255,.04);border-left-color:var(--y)"><div class="mini-title" style="color:rgba(255,255,255,.9)">Rubberised Level Crossings</div><div class="mini-body" style="color:rgba(255,255,255,.45)">Safety pad installations at manned and unmanned level crossings.</div></div>
+        <div class="mini" style="background:rgba(255,255,255,.04);border-left-color:var(--y)"><div class="mini-title" style="color:rgba(255,255,255,.9)">Rail Fracture Detection</div><div class="mini-body" style="color:rgba(255,255,255,.45)">Ultrasonic automated fracture detection services for track safety.</div></div>
+        <div class="mini" style="background:rgba(255,255,255,.04);border-left-color:var(--y)"><div class="mini-title" style="color:rgba(255,255,255,.9)">Solar & Hydrogen Systems</div><div class="mini-body" style="color:rgba(255,255,255,.45)">Solar power plants, solar items, hydrogen train components & storage.</div></div>
+        <div class="mini" style="background:rgba(255,255,255,.04);border-left-color:var(--y)"><div class="mini-title" style="color:rgba(255,255,255,.9)">Rail Tunnel Works</div><div class="mini-body" style="color:rgba(255,255,255,.45)">Tunnel boring, lining, waterproofing in challenging terrain.</div></div>
+        <div class="mini" style="background:rgba(255,255,255,.04);border-left-color:var(--y)"><div class="mini-title" style="color:rgba(255,255,255,.9)">Locomotive Electrical Parts</div><div class="mini-body" style="color:rgba(255,255,255,.45)">Electrical components, assemblies, and spares for railway locomotives.</div></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- METAL & PEB -->
+  <div class="srv-block rv">
+    <div class="srv-row">
+      <div class="srv-info"><div class="srv-num">08</div><div class="srv-title">Metal Fabrication & PEB</div><p class="srv-body">GasBuddy's fabrication division handles structural steel bridges, metallizing for corrosion protection, steel warehouses, and pre-engineered buildings for industrial and railway clients.</p><span class="srv-tag">Metal · Fabrication · PEB</span></div>
+      <div class="srv-cards-wrap"><div class="mini-cards">
+        <div class="mini"><div class="mini-title">Metallizing — Indian Railways</div><div class="mini-body">Thermal spray metallizing for corrosion protection of railway bridges and structures.</div></div>
+        <div class="mini"><div class="mini-title">Steel & Metal Bridges</div><div class="mini-body">Fabrication and erection of structural steel railway bridges.</div></div>
+        <div class="mini"><div class="mini-title">Steel Warehouses</div><div class="mini-body">Design-build of conventional and pre-engineered steel warehouses.</div></div>
+        <div class="mini"><div class="mini-title">PEB Structures</div><div class="mini-body">Pre-engineered factories, sheds, and commercial buildings.</div></div>
+      </div></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="ft">
+      <div><div class="ft-logo">Gas<br>Buddy</div><p class="ft-desc">India's trusted infrastructure specialists. Building stronger since 2009.</p></div>
+      <div><div class="ft-col-title">Services</div><div class="ft-links"><a onclick="showPage('services')">Fuel Infrastructure</a><a onclick="showPage('services')">Indian Railways</a><a onclick="showPage('services')">National Highways</a><a onclick="showPage('services')">Gas Storage</a></div></div>
+      <div><div class="ft-col-title">Company</div><div class="ft-links"><a onclick="showPage('about')">About Us</a><a onclick="showPage('projects')">Projects</a><a onclick="showPage('contact')">Contact</a></div></div>
+      <div><div class="ft-col-title">Contact</div><div class="ft-links"><a>info@gasbuddy.in</a><a>+91 98100 00000</a><a>New Delhi, India</a></div></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 GasBuddy Infrastructure Pvt. Ltd.</span><span class="brand">GasBuddy</span></div>
+  </footer>
+</div>
+
+<!-- ==================== PROJECTS ==================== -->
+<div class="page" id="page-projects">
+  <div class="page-hero">
+    <div class="page-hero-bg">PRJ</div>
+    <div class="ph-label">Our Work</div>
+    <div class="ph-title">Projects &<br>Case Studies</div>
+    <p class="ph-sub">500+ completed projects across India — from railway bridges to hydrogen train systems, national highways to solar-powered stations.</p>
+  </div>
+
+  <div class="proj-grid rv">
+    <div class="proj-card"><div class="proj-card-bg pc-blue"></div><div class="proj-num">01</div><div class="proj-arrow">→</div><div class="proj-card-content"><div class="proj-cat">Indian Railways</div><div class="proj-name">Heritage Station Beautification</div><div class="proj-desc">Art and mural beautification works at 12 heritage railway stations across North India.</div></div></div>
+    <div class="proj-card"><div class="proj-card-bg pc-yellow"></div><div class="proj-num">02</div><div class="proj-arrow">→</div><div class="proj-card-content light-card"><div class="proj-cat">Fuel Infrastructure</div><div class="proj-name">100-Station CNG Rollout</div><div class="proj-desc">End-to-end construction and commissioning of 100 CNG stations across 5 states for a major oil company.</div></div></div>
+    <div class="proj-card"><div class="proj-card-bg pc-dark"></div><div class="proj-num">03</div><div class="proj-arrow">→</div><div class="proj-card-content"><div class="proj-cat">Green Energy</div><div class="proj-name">Hydrogen Train Components</div><div class="proj-desc">Supply and fabrication of hydrogen fuel cell components and on-board storage systems for Indian Railways.</div></div></div>
+    <div class="proj-card"><div class="proj-card-bg pc-mid"></div><div class="proj-num">04</div><div class="proj-arrow">→</div><div class="proj-card-content"><div class="proj-cat">National Highways</div><div class="proj-name">NH-48 Bridge Package</div><div class="proj-desc">Construction of 4 major PSC girder bridges and 2 flyovers on NH-48 Delhi-Mumbai corridor.</div></div></div>
+    <div class="proj-card"><div class="proj-card-bg pc-light"></div><div class="proj-num">05</div><div class="proj-arrow">→</div><div class="proj-card-content light-card"><div class="proj-cat">EV Infrastructure</div><div class="proj-name">Highway EV Charging Network</div><div class="proj-desc">Installation of 200+ EV fast charging points across 60 highway locations for NHAI green corridor initiative.</div></div></div>
+    <div class="proj-card"><div class="proj-card-bg pc-blue"></div><div class="proj-num">06</div><div class="proj-arrow">→</div><div class="proj-card-content"><div class="proj-cat">Railways Safety</div><div class="proj-name">Rail Fracture Detection Network</div><div class="proj-desc">Automated ultrasonic fracture detection deployed across 1,200 km of high-speed railway track.</div></div></div>
+    <div class="proj-card"><div class="proj-card-bg pc-yellow"></div><div class="proj-num">07</div><div class="proj-arrow">→</div><div class="proj-card-content light-card"><div class="proj-cat">Solar Energy</div><div class="proj-name">Railway Station Solar Plants</div><div class="proj-desc">Rooftop solar power plant installation at 45 major railway stations — 28 MW total capacity.</div></div></div>
+    <div class="proj-card"><div class="proj-card-bg pc-dark"></div><div class="proj-num">08</div><div class="proj-arrow">→</div><div class="proj-card-content"><div class="proj-cat">Metal Fabrication</div><div class="proj-name">Steel Railway Bridges</div><div class="proj-desc">Fabrication and erection of 22 structural steel bridges for Indian Railways in hilly terrain.</div></div></div>
+    <div class="proj-card"><div class="proj-card-bg pc-mid"></div><div class="proj-num">09</div><div class="proj-arrow">→</div><div class="proj-card-content"><div class="proj-cat">Tunnels</div><div class="proj-name">Konkan Rail Tunnel Package</div><div class="proj-desc">Tunnel boring, concrete lining, and waterproofing works for 3.2 km twin-tube railway tunnel.</div></div></div>
+  </div>
+
+  <div class="proj-stats">
+    <div class="ps-cell"><div class="ps-num">500+</div><div class="ps-lbl">Projects Done</div></div>
+    <div class="ps-cell"><div class="ps-num">28</div><div class="ps-lbl">States</div></div>
+    <div class="ps-cell"><div class="ps-num">₹2000Cr+</div><div class="ps-lbl">Project Value</div></div>
+    <div class="ps-cell"><div class="ps-num">99%</div><div class="ps-lbl">On-Time</div></div>
+  </div>
+
+  <footer>
+    <div class="ft">
+      <div><div class="ft-logo">Gas<br>Buddy</div><p class="ft-desc">India's trusted infrastructure specialists.</p></div>
+      <div><div class="ft-col-title">Navigate</div><div class="ft-links"><a onclick="showPage('home')">Home</a><a onclick="showPage('services')">Services</a><a onclick="showPage('about')">About</a><a onclick="showPage('contact')">Contact</a></div></div>
+      <div><div class="ft-col-title">Sectors</div><div class="ft-links"><a>Indian Railways</a><a>National Highways</a><a>Fuel & Energy</a><a>Metal & PEB</a></div></div>
+      <div><div class="ft-col-title">Contact</div><div class="ft-links"><a>info@gasbuddy.in</a><a>+91 98100 00000</a></div></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 GasBuddy Infrastructure Pvt. Ltd.</span><span class="brand">GasBuddy</span></div>
+  </footer>
+</div>
+
+<!-- ==================== ABOUT ==================== -->
+<div class="page" id="page-about">
+  <div class="page-hero">
+    <div class="page-hero-bg">ABT</div>
+    <div class="ph-label">Who We Are</div>
+    <div class="ph-title">About<br>GasBuddy</div>
+    <p class="ph-sub">Over 15 years of building India's infrastructure — with integrity, innovation, and an unwavering commitment to excellence.</p>
+  </div>
+
+  <div class="about-intro rv">
+    <div class="ai-left">
+      <div class="ai-big">Our<br><em>Story.</em></div>
+      <p class="ai-body">Founded in 2009, GasBuddy started as a fuel station construction company in Delhi. Today, we are one of India's most trusted multi-sector infrastructure firms — delivering projects from Kashmir to Kanyakumari across 9 sectors and 40+ work types.<br><br>Our growth has been driven by one principle: build what India needs, the right way.</p>
+    </div>
+    <div class="ai-right">
+      <div class="ai-right-title">Our Mission & Vision</div>
+      <p class="ai-body-r" style="font-size:15px;color:rgba(0,0,0,.6);line-height:1.8;margin-bottom:28px"><strong>Mission:</strong> To deliver world-class infrastructure that powers India's growth — on time, on budget, and built to last.</p>
+      <p class="ai-body-r" style="font-size:15px;color:rgba(0,0,0,.6);line-height:1.8"><strong>Vision:</strong> To be India's most trusted integrated infrastructure company, leading the transition to sustainable, green energy infrastructure.</p>
+    </div>
+  </div>
+
+  <section class="values rv">
+    <div class="sec-label">Our Values</div>
+    <div class="sec-heading">What Drives Us</div>
+    <div class="val-grid">
+      <div class="val-card"><div class="vc-icon">🎯</div><div class="vc-title">Precision</div><div class="vc-body">Every measurement, every weld, every pour — executed to exact specification with zero compromise.</div></div>
+      <div class="val-card"><div class="vc-icon">🌱</div><div class="vc-title">Sustainability</div><div class="vc-body">Building for the future means building green. Solar, hydrogen, and EV are at the heart of our work.</div></div>
+      <div class="val-card"><div class="vc-icon">🤝</div><div class="vc-title">Integrity</div><div class="vc-body">Honest dealings, transparent reporting, and doing what we say — always.</div></div>
+      <div class="val-card"><div class="vc-icon">🚀</div><div class="vc-title">Innovation</div><div class="vc-body">Embracing new technology — from hydrogen trains to Type-4 cylinders — to stay ahead of India's needs.</div></div>
+    </div>
+  </section>
+
+  <section class="team rv">
+    <div class="sec-label">Leadership</div>
+    <div class="sec-heading">Our Team</div>
+    <div class="team-grid">
+      <div class="team-card"><div class="tc-photo tc-blue"><span class="tc-initials">RK</span></div><div class="tc-info"><div class="tc-name">Rajesh Kumar</div><div class="tc-role">Chairman & MD</div></div></div>
+      <div class="team-card"><div class="tc-photo tc-yellow"><span class="tc-initials" style="color:#111">PS</span></div><div class="tc-info"><div class="tc-name">Priya Sharma</div><div class="tc-role">Director — Railways</div></div></div>
+      <div class="team-card"><div class="tc-photo tc-blue"><span class="tc-initials">AM</span></div><div class="tc-info"><div class="tc-name">Arun Mehta</div><div class="tc-role">Director — Energy</div></div></div>
+      <div class="team-card"><div class="tc-photo tc-yellow"><span class="tc-initials" style="color:#111">SV</span></div><div class="tc-info"><div class="tc-name">Sunita Verma</div><div class="tc-role">Head — Operations</div></div></div>
+    </div>
+  </section>
+
+  <section class="timeline rv">
+    <div class="sec-label" style="color:var(--y)">Our Journey</div>
+    <div class="sec-heading" style="color:var(--w)">Milestones</div>
+    <div class="tl-items">
+      <div class="tl-item"><div class="tl-year">2009</div><div><div class="tl-right-title">Founded in New Delhi</div><div class="tl-right-body">GasBuddy incorporated as a fuel station construction company. First petrol pump project delivered in 3 months.</div></div></div>
+      <div class="tl-item"><div class="tl-year">2012</div><div><div class="tl-right-title">CNG Division Launched</div><div class="tl-right-body">Expanded into CNG station construction. Delivered first 50-station contract for a national oil marketing company.</div></div></div>
+      <div class="tl-item"><div class="tl-year">2015</div><div><div class="tl-right-title">Indian Railways Empanelment</div><div class="tl-right-body">Empanelled as an approved contractor for Indian Railways. First FOB project delivered at New Delhi Station.</div></div></div>
+      <div class="tl-item"><div class="tl-year">2018</div><div><div class="tl-right-title">National Highways & Metal Division</div><div class="tl-right-body">Entered NHAI works and launched metal fabrication division. First major bridge contract on NH-48.</div></div></div>
+      <div class="tl-item"><div class="tl-year">2021</div><div><div class="tl-right-title">Green Energy — Solar & EV</div><div class="tl-right-body">Installed first railway solar plant. Launched EV charging station division. 200+ EV points in Year 1.</div></div></div>
+      <div class="tl-item"><div class="tl-year">2024</div><div><div class="tl-right-title">Hydrogen Train Systems</div><div class="tl-right-body">First Indian private company to deliver hydrogen fuel cell train components and on-board storage for Indian Railways.</div></div></div>
+      <div class="tl-item"><div class="tl-year">2026</div><div><div class="tl-right-title">500+ Projects Milestone</div><div class="tl-right-body">Crossed 500 completed projects across 28 states. ₹2000 Cr+ total project value. Growing every year.</div></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ft">
+      <div><div class="ft-logo">Gas<br>Buddy</div><p class="ft-desc">Building stronger since 2009.</p></div>
+      <div><div class="ft-col-title">Navigate</div><div class="ft-links"><a onclick="showPage('home')">Home</a><a onclick="showPage('services')">Services</a><a onclick="showPage('projects')">Projects</a><a onclick="showPage('contact')">Contact</a></div></div>
+      <div><div class="ft-col-title">Sectors</div><div class="ft-links"><a>Indian Railways</a><a>National Highways</a><a>Fuel & Energy</a><a>Metal & PEB</a></div></div>
+      <div><div class="ft-col-title">Contact</div><div class="ft-links"><a>info@gasbuddy.in</a><a>+91 98100 00000</a><a>New Delhi HQ</a></div></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 GasBuddy Infrastructure Pvt. Ltd.</span><span class="brand">GasBuddy</span></div>
+  </footer>
+</div>
+
+<!-- ==================== CONTACT ==================== -->
+<div class="page" id="page-contact">
+  <div class="page-hero">
+    <div class="page-hero-bg">HELLO</div>
+    <div class="ph-label">Get In Touch</div>
+    <div class="ph-title">Contact<br>GasBuddy</div>
+    <p class="ph-sub">Have a project in mind? Let's talk. Our team is ready to help you build faster, smarter, and greener.</p>
+  </div>
+
+  <div class="contact-layout rv">
+    <div class="cl-left">
+      <div class="cl-title">Let's<br><em>Build</em><br>Together.</div>
+      <div class="contact-item"><div class="ci-icon">📍</div><div><div class="ci-label">Headquarters</div><div class="ci-val">Plot 42, Sector 18, Gurugram, Haryana 122015</div></div></div>
+      <div class="contact-item"><div class="ci-icon">📞</div><div><div class="ci-label">Phone</div><div class="ci-val">+91 98100 00000</div></div></div>
+      <div class="contact-item"><div class="ci-icon">✉️</div><div><div class="ci-label">Email</div><div class="ci-val">info@gasbuddy.in</div></div></div>
+      <div class="contact-item"><div class="ci-icon">🕐</div><div><div class="ci-label">Working Hours</div><div class="ci-val">Mon – Sat, 9:00 AM – 6:00 PM IST</div></div></div>
+    </div>
+    <div class="cl-right">
+      <div class="form-title">Send Us a Message</div>
+      <div class="form-row">
+        <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name"></div>
+        <div class="form-group"><label>Company</label><input type="text" placeholder="Company name"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+        <div class="form-group"><label>Phone</label><input type="tel" placeholder="+91 00000 00000"></div>
+      </div>
+      <div class="form-group"><label>Service Required</label>
+        <select><option value="">Select a service...</option><option>Petrol Pump Construction</option><option>CNG Station</option><option>EV Charging Station</option><option>Gas Storage Equipment</option><option>National Highway Works</option><option>Indian Railways Works</option><option>Metal Fabrication</option><option>PEB Works</option></select>
+      </div>
+      <div class="form-group"><label>Message</label><textarea placeholder="Tell us about your project..."></textarea></div>
+      <button class="submit-btn">Send Message →</button>
+    </div>
+  </div>
+
+  <section class="offices rv">
+    <div class="sec-label">Our Offices</div>
+    <div class="sec-heading">Where We Are</div>
+    <div class="office-grid">
+      <div class="office-card"><div class="oc-icon">🏢</div><div class="oc-city">New Delhi (HQ)</div><div class="oc-addr">Plot 42, Sector 18<br>Gurugram, Haryana 122015<br>+91 98100 00001</div></div>
+      <div class="office-card"><div class="oc-icon">🏢</div><div class="oc-city">Mumbai</div><div class="oc-addr">Unit 8, BKC Complex<br>Bandra East, Mumbai 400051<br>+91 98100 00002</div></div>
+      <div class="office-card"><div class="oc-icon">🏢</div><div class="oc-city">Chennai</div><div class="oc-addr">14 Anna Salai, Nungambakkam<br>Chennai, Tamil Nadu 600034<br>+91 98100 00003</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ft">
+      <div><div class="ft-logo">Gas<br>Buddy</div><p class="ft-desc">India's trusted infrastructure specialists. Building stronger since 2009.</p></div>
+      <div><div class="ft-col-title">Navigate</div><div class="ft-links"><a onclick="showPage('home')">Home</a><a onclick="showPage('services')">Services</a><a onclick="showPage('projects')">Projects</a><a onclick="showPage('about')">About</a></div></div>
+      <div><div class="ft-col-title">Sectors</div><div class="ft-links"><a>Indian Railways</a><a>National Highways</a><a>Fuel & Energy</a><a>Metal & PEB</a></div></div>
+      <div><div class="ft-col-title">Legal</div><div class="ft-links"><a>Privacy Policy</a><a>Terms of Service</a><a>Sitemap</a></div></div>
+    </div>
+    <div class="ft-bottom"><span>© 2026 GasBuddy Infrastructure Pvt. Ltd. All rights reserved.</span><span class="brand">GasBuddy</span></div>
+  </footer>
+</div>
+
+<script>
+const cursor=document.getElementById('cursor');
+document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'});
+document.querySelectorAll('button,a,.sc,.why-box,.val-card,.team-card,.office-card,.proj-card,.mini,.tl-item,.icard,.srv-tag').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cursor.classList.add('big'));
+  el.addEventListener('mouseleave',()=>cursor.classList.remove('big'));
+});
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('solid',window.scrollY>60);
+});
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('btn-'+name).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(initReveal,100);
+}
+
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')});
+  },{threshold:0.07});
+  document.querySelectorAll('.page.active .rv').forEach(el=>{obs.observe(el)});
+  // stagger cards
+  const cobs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.sc,.mini,.val-card,.why-box,.office-card,.proj-card,.tl-item,.team-card').forEach((c,i)=>{
+          setTimeout(()=>{c.style.opacity='1';c.style.transform='translateY(0)'},i*70);
+        });
+      }
+    });
+  },{threshold:0.05});
+  document.querySelectorAll('.page.active .sec-cards,.page.active .mini-cards,.page.active .val-grid,.page.active .why-right,.page.active .office-grid,.page.active .proj-grid,.page.active .tl-items,.page.active .team-grid').forEach(g=>{
+    g.querySelectorAll('.sc,.mini,.val-card,.why-box,.office-card,.proj-card,.tl-item,.team-card').forEach(c=>{
+      c.style.opacity='0';c.style.transform='translateY(28px)';c.style.transition='opacity .5s ease,transform .5s ease';
+    });
+    cobs.observe(g);
+  });
+}
+initReveal();
+</script>
+</body>
+</html>
