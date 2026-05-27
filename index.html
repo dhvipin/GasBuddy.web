@@ -2047,7 +2047,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            background: linear-gradient(to top, rgba(0, 0, 0, .65) 0%, transparent 60%)
+            /* background: linear-gradient(to top, rgba(0, 0, 0, .65) 0%, transparent 60%) */
         }
 
         .ih-name {
@@ -2879,6 +2879,305 @@
                 font-size: 44px
             }
         }
+
+        .ind-hero-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .ihcard {
+            position: relative;
+            overflow: hidden;
+            border-radius: 22px;
+            min-height: 340px;
+            background: #000;
+            isolation: isolate;
+            cursor: pointer;
+            transition: .4s ease;
+        }
+
+        .ihcard:hover {
+            transform: translateY(-6px);
+        }
+
+        /* IMAGE */
+        .ihcard-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transition: transform .6s ease;
+            filter: brightness(.9) contrast(1.05);
+        }
+
+        .ihcard:hover .ihcard-img {
+            transform: scale(1.06);
+        }
+
+        /* DARK GRADIENT FOR TEXT VISIBILITY */
+        .ihcard::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to top,
+                    rgba(0, 0, 0, .82) 5%,
+                    rgba(0, 0, 0, .45) 35%,
+                    rgba(0, 0, 0, .15) 60%,
+                    rgba(0, 0, 0, .05) 100%);
+            z-index: 2;
+        }
+
+        /* REMOVE OLD BG OVERLAY */
+        .ihcard-bg {
+            display: none;
+        }
+
+        /* TAG */
+        .ih-tag {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            z-index: 3;
+            padding: 7px 14px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, .15);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, .2);
+        }
+
+        /* CONTENT */
+        .ihcard-content {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 28px;
+            z-index: 3;
+            color: #fff;
+        }
+
+        /* TITLE */
+        .ih-name {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.15;
+            color: #fff;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, .5);
+        }
+
+        /* DESCRIPTION */
+        .ih-desc {
+            font-size: 15px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, .92);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+        }
+
+        /* MOBILE */
+        @media(max-width:991px) {
+            .ind-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ihcard {
+                min-height: 300px;
+            }
+
+            .ih-name {
+                font-size: 24px;
+            }
+        }
+
+
+        /* PROJECT CARDS */
+
+        .proj-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .pcard {
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            min-height: 420px;
+            background: #111;
+            isolation: isolate;
+            transition: .45s ease;
+            cursor: pointer;
+        }
+
+        .pcard:hover {
+            transform: translateY(-8px);
+        }
+
+        /* BACKGROUND IMAGE */
+        .pcard-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform .7s ease;
+            z-index: 1;
+            filter: brightness(.92) contrast(1.05);
+        }
+
+        .pcard:hover .pcard-bg {
+            transform: scale(1.08);
+        }
+
+        /* DARK OVERLAY FOR TEXT READABILITY */
+        .pcard::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to top,
+                    rgba(0, 0, 0, .88) 5%,
+                    rgba(0, 0, 0, .58) 35%,
+                    rgba(0, 0, 0, .20) 65%,
+                    rgba(0, 0, 0, .05) 100%);
+            z-index: 2;
+        }
+
+        /* CARD CONTENT */
+        .pcard-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            z-index: 3;
+            color: #fff;
+        }
+
+        /* CATEGORY */
+        .pc-cat {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, .75);
+        }
+
+        /* TITLE */
+        .pc-name {
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 14px;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+        }
+
+        /* DESCRIPTION */
+        .pc-desc {
+            font-size: 15px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, .92);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+        }
+
+        /* NUMBER */
+        .pc-num {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 3;
+            font-size: 44px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, .9);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, .4);
+        }
+
+        /* ARROW */
+        .pc-arr {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            z-index: 3;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, .14);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 22px;
+            border: 1px solid rgba(255, 255, 255, .2);
+        }
+
+        /* REMOVE LIGHT CARD STYLE */
+        .light-card {
+            color: #fff !important;
+        }
+
+        /* BACKGROUND IMAGES */
+
+        .pcb1 {
+            background-image: url('https://images.unsplash.com/photo-1529429617124-aee711a5ac1c?q=80&w=1400&auto=format&fit=crop');
+        }
+
+        .pcb2 {
+            background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop');
+        }
+
+        .pcb3 {
+            background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1400&auto=format&fit=crop');
+        }
+
+        .pcb4 {
+            background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1400&auto=format&fit=crop');
+        }
+
+        .pcb5 {
+            background-image: url('https://images.unsplash.com/photo-1593941707882-a5bac6861d75?q=80&w=1400&auto=format&fit=crop');
+        }
+
+        .pcb6 {
+            background-image: url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?q=80&w=1400&auto=format&fit=crop');
+        }
+
+        .pcb7 {
+            background-image: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1400&auto=format&fit=crop');
+        }
+
+        /* MOBILE */
+        @media(max-width:991px) {
+
+            .proj-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pcard {
+                min-height: 360px;
+            }
+
+            .pc-name {
+                font-size: 24px;
+            }
+
+            .pc-desc {
+                font-size: 14px;
+            }
+
+            .pc-num {
+                font-size: 34px;
+            }
+        }
     </style>
 </head>
 
@@ -3093,7 +3392,7 @@
                     <div class="bc-sub">Railway Work Types Delivered</div>
                 </div>
                 <div class="bc bc3">
-                    <div class="bc-bgn" style="color:#111">07</div>
+                    <div class="bc-bgn">07</div>
                     <div class="bc-label" style="color:rgba(0,0,0,.4)">Work Category</div>
                     <div class="bc-big">Heritage<br>Stations</div>
                     <div class="bc-body">Art installations, murals, and complete beautification at heritage railway
@@ -3689,58 +3988,92 @@
                 to deliver complex, integrated infrastructure solutions.</p>
             <div class="ph-crumb"><span>Home</span><span>›</span><b>Industries</b></div>
         </div>
-
         <div class="ind-hero-grid rv">
+
             <div class="ihcard">
-                <div class="ihcard-bg" style="background:var(--b)"></div><span class="ih-tag">Core</span>
+                <div class="ihcard-bg" style="background:var(--b)"></div>
+                <img src="https://arrowwingsacademy.com/wp-content/uploads/2023/02/Oil-and-Gas-storage.jpg"
+                    alt="Oil & Gas Infrastructure" class="ihcard-img">
+                <span class="ih-tag">Core</span>
+
                 <div class="ihcard-content">
                     <div class="ih-name">Oil & Gas</div>
-                    <div class="ih-desc">Petrol pumps, CNG stations, gas storage, and EV charging for OMCs and CGD
-                        companies.</div>
+                    <div class="ih-desc">
+                        Petrol pumps, CNG stations, gas storage, and EV charging for OMCs and CGD companies.
+                    </div>
                 </div>
             </div>
+
             <div class="ihcard">
-                <div class="ihcard-bg" style="background:#0a2540"></div><span class="ih-tag"
-                    style="background:var(--b);color:var(--w)">Flagship</span>
+                <div class="ihcard-bg" style="background:#0a2540"></div>
+                <img src="https://c.ndtvimg.com/2026-01/oum6hnek_train_625x300_07_January_26.jpg?im=FeatureCrop,algorithm=dnn,width=1200,height=738"
+                    alt="Indian Railways Projects" class="ihcard-img">
+                <span class="ih-tag" style="background:var(--b);color:var(--w)">Flagship</span>
+
                 <div class="ihcard-content">
                     <div class="ih-name">Indian Railways</div>
-                    <div class="ih-desc">Civil, structural, safety, solar, and hydrogen works across all Indian Railways
-                        zones.</div>
+                    <div class="ih-desc">
+                        Civil, structural, safety, solar, and hydrogen works across all Indian Railways zones.
+                    </div>
                 </div>
             </div>
+
             <div class="ihcard">
-                <div class="ihcard-bg" style="background:#1a5a8a"></div><span class="ih-tag">NH</span>
+                <div class="ihcard-bg" style="background:#1a5a8a"></div>
+                <img src="https://img.staticmb.com/mbcontent/images/crop/uploads/2024/2/biggest-highway-in-india_0_1200.jpg.webp"
+                    alt="National Highway Construction" class="ihcard-img">
+                <span class="ih-tag">NH</span>
+
                 <div class="ihcard-content">
                     <div class="ih-name">National Highways</div>
-                    <div class="ih-desc">Roads, bridges, flyovers, and complete corridor development for NHAI and state
-                        agencies.</div>
+                    <div class="ih-desc">
+                        Roads, bridges, flyovers, and complete corridor development for NHAI and state agencies.
+                    </div>
                 </div>
             </div>
+
             <div class="ihcard">
-                <div class="ihcard-bg" style="background:#0c3d2a"></div><span class="ih-tag">Green</span>
+                <div class="ihcard-bg" style="background:#0c3d2a"></div>
+                <img src="https://cdn.britannica.com/10/222610-138-F0268996/britannica-insights-Phil-the-Fixer-renewable-energy.jpg?w=800&h=450&c=crop"
+                    alt="Renewable Energy Infrastructure" class="ihcard-img">
+                <span class="ih-tag">Green</span>
+
                 <div class="ihcard-content">
                     <div class="ih-name">Renewable Energy</div>
-                    <div class="ih-desc">Solar plants, EV charging networks, hydrogen storage, and green energy
-                        infrastructure.</div>
+                    <div class="ih-desc">
+                        Solar plants, EV charging networks, hydrogen storage, and green energy infrastructure.
+                    </div>
                 </div>
             </div>
+
             <div class="ihcard">
-                <div class="ihcard-bg" style="background:var(--y)"></div><span class="ih-tag"
-                    style="background:var(--b);color:var(--w)">Industrial</span>
+                <div class="ihcard-bg" style="background:var(--y)"></div>
+                <img src="https://kaizen.com/wp-content/uploads/2024/05/capa-22-scaled.webp"
+                    alt="Industrial Manufacturing Infrastructure" class="ihcard-img">
+                <span class="ih-tag" style="background:var(--b);color:var(--w)">Industrial</span>
+
                 <div class="ihcard-content">
-                    <div class="ih-name" style="color:#111">Industrial & Manufacturing</div>
-                    <div class="ih-desc" style="color:rgba(0,0,0,.65)">PEB factories, steel warehouses, gas equipment,
-                        and industrial infrastructure.</div>
+                    <div class="ih-name">Industrial & Manufacturing</div>
+                    <div class="ih-desc">
+                        PEB factories, steel warehouses, gas equipment, and industrial infrastructure.
+                    </div>
                 </div>
             </div>
+
             <div class="ihcard">
-                <div class="ihcard-bg" style="background:#003d6b"></div><span class="ih-tag">Govt</span>
+                <div class="ihcard-bg" style="background:#003d6b"></div>
+                <img src="https://api.thesecretariat.in/the-secretariat-api/public/file/download-content-attachment?fileId=e1af2e1f6f1547c884009d310609605d"
+                    alt="Defence and Government Infrastructure" class="ihcard-img">
+                <span class="ih-tag">Govt</span>
+
                 <div class="ihcard-content">
                     <div class="ih-name">Defence & Government</div>
-                    <div class="ih-desc">Fuel depots, gas storage, structural works, and infrastructure for PSU and
-                        defence clients.</div>
+                    <div class="ih-desc">
+                        Fuel depots, gas storage, structural works, and infrastructure for PSU and defence clients.
+                    </div>
                 </div>
             </div>
+
         </div>
 
         <div class="ind-detail sec-d id-dark rv" style="margin-top:3px">
